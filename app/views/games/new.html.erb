@@ -8,9 +8,9 @@
     <p><%= text_area :description, :label => "Описание" %></p>
     <p><%= text_field :starts_at, :label => "Начало игры" %> <input id="calendar-switch" type="button" value="..."/></p>
     </br><p><%= text_field :registration_deadline, :label => "Крайний срок регистрации " %><input id="calendar-switch2" type="button" value="..."/></p>
-    <br/><p><input id="max_team_checkbox" type="checkbox" onclick=toggle(this) /></p>
-    <p><label for="max_team_checkbox">Ограничить</label>
-    <br><p><%= text_field :max_team_number, :label => "количество команд" %></p>
+    <br/><p><input id="max_user_checkbox" type="checkbox" onclick=toggle(this) /></p>
+    <p><label for="max_user_checkbox">Ограничить</label>
+    <br><p><%= text_field :max_user_number, :label => "количество команд" %></p>
     <br/><p><%= check_box :is_draft, :label => "Черновик?" %></p>
     <br/>
     <%= submit "Создать игру" %>
@@ -37,16 +37,16 @@
             );
 
     function onload(){
-        document.getElementById('game_max_team_number').style.visibility = 'hidden'
+        document.getElementById('game_max_user_number').style.visibility = 'hidden'
     }
 
     function toggle(sourceCheckbox) {
         if (sourceCheckbox.checked) {
-            document.getElementById('game_max_team_number').style.visibility = 'visible'
-            document.getElementById('game_max_team_number').focus()
+            document.getElementById('game_max_user_number').style.visibility = 'visible'
+            document.getElementById('game_max_user_number').focus()
         }
         else {
-            document.getElementById('game_max_team_number').style.visibility = 'hidden'
+            document.getElementById('game_max_user_number').style.visibility = 'hidden'
         }
     }
 </script>

@@ -2,12 +2,11 @@ class Games < Application
   before :ensure_authenticated, :exclude => [:index, :show]
   before :build_game, :only => [:new, :create]
   before :find_game, :only => [:show, :edit, :update, :delete, :end_game]
-  before :find_team, :only => [:show]
   before :ensure_author_if_game_is_draft, :only => [:show]
   before :ensure_author_if_no_start_time, :only =>[:show]
   before :ensure_author, :only => [:edit, :update]
-  before :ensure_game_was_not_started, :only => [:edit, :update]
-  before :max_team_number_from_nz, :only => [:create, :update]
+  #before :ensure_game_was_not_started, :only => [:edit, :update]
+  before :max_user_number_from_nz, :only => [:create, :update]
 
   def index
     unless params[:user_id].blank?
@@ -33,9 +32,9 @@ class Games < Application
 
   def show
     @game_entries = GameEntry.of_game(@game).with_status("new")
-    @teams = []
+    @users = []
     GameEntry.of_game(@game).with_status("accepted").each do |entry|
-      @teams << Team.find(entry.team_id)
+      @users << User.find(entry.user_id)
     end
     render
   end
@@ -111,14 +110,6 @@ class Games < Application
     @game.draft?
   end
 
-  def find_team
-    if @current_user
-      @team = @current_user.team
-    else
-      @team = nil
-    end
-  end
-
   def no_start_time?
     @game.starts_at.nil?
   end
@@ -131,9 +122,9 @@ class Games < Application
     ensure_author if no_start_time?
   end
 
-  def max_team_number_from_nz
-    if @game.max_team_number.nil? or @game.max_team_number.equal?(0)
-      @game.max_team_number = 10000
+  def max_user_number_from_nz
+    if @game.max_user_number.nil? or @game.max_user_number.equal?(0)
+      @game.max_user_number = 10000
     end
   end
 end

@@ -17,7 +17,7 @@
 </p>
 
 <p>
-  <%= link_to "Редактировать текст и название задания", resource(@game, @level, :edit) unless @level.game.started? %>
+  <%= link_to "Редактировать текст и название задания", resource(@game, @level, :edit) %>
 </p>
 
 <br />
@@ -55,6 +55,7 @@
     <div id="question-<%=  question.id %>">
       <p><%= question.correct_answer %></p>
       <%= link_to "(редактировать)", resource(@game, @level, question, :answers) %>
+      <%= link_to "(удалить)", resource(@game, @level, question, :delete) %>
     </div>
     <% end %>
   <% end %>

@@ -6,11 +6,11 @@ Given %r{зарегистрирован пользователь (.*)$}i do |nic
   Given %{все отосланные к этому моменту письма прочитаны}
 end
 
-When %r{пытаюсь зарегистрироваться как (.*)}i do |nickname|
-  email = "#{nickname.downcase}@diesel.kg"
+When %r{пытаюсь зарегистрироваться как (.*)}i do |name|
+  email = "#{name.downcase}@diesel.kg"
 
   Given %{я захожу по адресу /signup}
-  When %{я ввожу "#{nickname}" в поле "Имя"}
+  When %{я ввожу "#{name}" в поле "Название команды"}
   When %{ввожу "#{email}" в поле "Email"}
   When %{ввожу "#{@the_password}" в поле "Пароль"}
   When %{ввожу "#{@the_password}" в поле "Подтверждение"}

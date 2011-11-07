@@ -8,7 +8,7 @@
 
 
 <p>
-  <em>Автор</em> - <strong><%= @game.author.nickname %></strong>
+  <em>Автор</em> - <strong><%= @game.author.name %></strong>
 </p>
 
 <p>
@@ -37,11 +37,11 @@
   <em>Максимальное количество команд:</em>
 </p>
 <p>
-  <% if @game.max_team_number.equal?(10000) or @game.max_team_number.equal?(0) or @game.max_team_number.nil? %>
+  <% if @game.max_user_number.equal?(10000) or @game.max_user_number.equal?(0) or @game.max_user_number.nil? %>
     Неограничено
-    <% @game.max_team_number = 10000 %>
+    <% @game.max_user_number = 10000 %>
   <% else %>
-    <%= @game.max_team_number %>
+    <%= @game.max_user_number %>
   <% end %>
 </p>
 
@@ -62,12 +62,12 @@
       <%= link_to "Добавить новое задание", resource(@game, :levels, :new) if ! @game.started? %>
     </p>
   </fieldset>
-  <br/>
+  <br />
       <%= partial 'games/game_entries', :game_entries => @game_entries  %>
 
     <br/>
 
-    <%= partial 'games/teams', :teams => @teams  %>
+    <%= partial 'games/users', :users => @users  %>
   <br />
   <p>
     <%= link_to "Редактировать эту игру", resource(@game, :edit) if ! @game.started? %>
@@ -94,7 +94,7 @@
 </script>
 
 <br />
-<%= partial 'teams', :teams => @teams if (!logged_in?) || (logged_in? && !@current_user.author_of?(@game)) %>
+<%= partial 'users', :users => @users if (!logged_in?) || (logged_in? && !@current_user.author_of?(@game)) %>
 
 <% if @game.draft? and !@game.started? and @game.levels and @game.levels.count > 0 %>
    <%= link_to 'Начать тестирование', url("games/start_test/#{@game.id}") %>

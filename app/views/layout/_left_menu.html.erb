@@ -1,10 +1,7 @@
 <fieldset>
 <% if logged_in? %>
   <legend>
-    <%= link_to current_user.nickname, url(:dashboard) %>
-    <% if current_user.member_of_any_team? %>
-      (<%= link_to current_user.team.name, resource(@current_user.team) %>)
-    <% end %>
+    <%= link_to current_user.name, url(:dashboard) %>
   </legend>
 
   <p>
@@ -13,14 +10,6 @@
 
   <p>
     <%= link_to "Профиль", url(:users) %>
-  </p>
-
-  <p>
-    <% if current_user.member_of_any_team? %>
-      <%= link_to "Комната команды", resource(@current_user.team) %>
-    <% else %>
-      <%= link_to "Создать команду", resource(:teams, :new) %>
-    <% end %>
   </p>
 
   <p>

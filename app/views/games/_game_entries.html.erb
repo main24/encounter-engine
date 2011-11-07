@@ -6,11 +6,11 @@
   <p>
 <% game_entries.each do |entry| %>
 <%
-  @team = Team.find(entry.team_id)
+  @user = User.find(entry.user_id)
   @game = Game.find(entry.game_id)
 %>
   <p>
-    <strong><%= @team.name %> <%= @game.name %></strong>
+    <strong><%= @user.name %> <%= @game.name %></strong>
     <em><%= link_to "(принять)", "/game_entries/accept/#{entry.id}" %></em>
     <em><%= link_to "(отказать)", "/game_entries/reject/#{entry.id}" %></em>
   </p>

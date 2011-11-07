@@ -14,7 +14,7 @@ class Game < ActiveRecord::Base
   validates_presence_of :description,
                         :message => "Вы не ввели описание"
 
-  validates_numericality_of :max_team_number, :greater_than_or_equal_to => 0, :less_than_or_equal_to => 10000, :allow_nil => true,
+  validates_numericality_of :max_user_number, :greater_than_or_equal_to => 0, :less_than_or_equal_to => 10000, :allow_nil => true,
                         :message => "Вы некорректно указали ограничение на количество команд в игре"
 
 
@@ -46,12 +46,12 @@ class Game < ActiveRecord::Base
     user.author_of?(self)
   end
 
-  def finished_teams
-    GamePassing.of_game(self).finished.map(&:team)
+  def finished_users
+    GamePassing.of_game(self).finished.map(&:user)
   end
 
-  def place_of(team)
-    game_passing = GamePassing.of(team, self)
+  def place_of(user)
+    game_passing = GamePassing.of(user, self)
     return nil unless game_passing and game_passing.finished?
 
     count_of_finished_before = GamePassing.of_game(self).finished_before(game_passing.finished_at).count
@@ -62,20 +62,20 @@ class Game < ActiveRecord::Base
     Game.all.select { |game| !game.draft? && !game.started? }
   end
 
-  def free_place_of_team!
-    if self.requested_teams_number>0
-      self.requested_teams_number-=1
+  def free_place_of_user!
+    if self.requested_users_number>0
+      self.requested_users_number-=1
       self.save
     end
   end
 
-  def reserve_place_for_team!
-    self.requested_teams_number+=1;
+  def reserve_place_for_user!
+    self.requested_users_number+=1;
     self.save
   end
 
   def can_request?
-    self.requested_teams_number < self.max_team_number
+    self.requested_users_number < self.max_user_number
     Game.all.select { |game| !game.started? }
   end
 
@@ -101,9 +101,9 @@ class Game < ActiveRecord::Base
   end
 
   def valid_max_num
-    if self.max_team_number
-      if self.max_team_number < self.requested_teams_number
-        self.errors.add(:max_team_number, "Количество команд, подавших заявку превышает заданное число")
+    if self.max_user_number
+      if self.max_user_number < self.requested_users_number
+        self.errors.add(:max_user_number, "Количество команд, подавших заявку превышает заданное число")
       end
     end
   end

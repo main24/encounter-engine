@@ -12,8 +12,8 @@
     <% game_passings = GamePassing.of_game(@game) %>
     <% game_passings.finished.each do |game_passing| %>
       <tr>
-        <td><%= @game.place_of(game_passing.team) %></td>
-        <td><%= game_passing.team.name %></td>
+        <td><%= @game.place_of(game_passing.user) %></td>
+        <td><%= game_passing.user.name %></td>
         <td>
           <% if game_passing.exited? %>
             <b>Сошли с дистанции</b>(<%= game_passing.finished_at.strftime('%H:%M:%S') %><%= ' ' + game_passing.finished_at.strftime('(%d.%m)') if game_passing.finished_at.day != @game.starts_at.day %>)
@@ -26,7 +26,7 @@
     <% (game_passings.ended_by_author - game_passings.finished).each do |game_passing| %>
         <tr>
           <td>#</td>
-          <td><%= game_passing.team.name %></td>
+          <td><%= game_passing.user.name %></td>
           <td>
             Не финишировали
           </td>

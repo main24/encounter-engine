@@ -17,13 +17,13 @@
         </td>
       </tr>
       <tr valign="top">
-        <% @teams.each do |team| %>
+        <% @users.each do |user| %>
         <td>
-          <%= team.name %>
-          <% team_logs = Log.of_team(team).of_level(level) %>
+          <%= user.name %>
+          <% user_logs = Log.of_user(user).of_level(level) %>
           <ul>
-          <% team_logs.each do |team_log| %>
-            <li><%= team_log.time.strftime("%H:%M:%S") %>&nbsp;<%= team_log.answer %></li>
+          <% user_logs.each do |user_log| %>
+            <li><%= user_log.time.strftime("%H:%M:%S") %>&nbsp;<%= user_log.answer %></li>
           <% end %>
           </ul>
         </td>

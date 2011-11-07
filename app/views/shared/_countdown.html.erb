@@ -17,7 +17,7 @@
         <% if logged_in? and @current_user.author_of?(@game) %>
           return
         <% end %>
-        <% unless @game.finished_teams %>
+        <% unless @game.finished_users %>
           return
         <% end %>
         <% unless @game.levels && @game.levels.count > 0 %>
@@ -26,19 +26,19 @@
         <% if @game.draft? %>
           return
         <% end %>
-        <% unless @team.nil? %>
-            <% unless @game.game_passings.of_team(@team).first.nil? %>
-                <% if @game.game_passings.of_team(@team).first.finished? %>
-                  return
-                <% end %>
-            <% end %>
+
+        <% unless @game.game_passings.of_user(@user).first.nil? %>
+          <% if @game.game_passings.of_user(@user).first.finished? %>
+             return
+          <% end %>
         <% end %>
+
         <% if @game.author_finished? %>
           return
         <% end %>
         <%
-        if @team && @game
-          @game_entry = GameEntry.of(@team,@game)
+        if @user && @game
+          @game_entry = GameEntry.of(@user,@game)
           if @game_entry
             if @game_entry.status == "accepted"
             %>

@@ -2,12 +2,12 @@ class GamePassing < ActiveRecord::Base
   serialize :answered_questions
   default_value_for :answered_questions, []
 
-  belongs_to :team
+  belongs_to :user
   belongs_to :game
   belongs_to :current_level, :class_name => "Level"
 
   named_scope :of_game, lambda { |game| { :conditions => { :game_id => game.id } } }
-  named_scope :of_team, lambda { |team| { :conditions => { :team_id => team.id } } }
+  named_scope :of_user, lambda { |user| { :conditions => { :user_id => user.id } } }
   named_scope :ended_by_author, :conditions => ['status = "ended"'], :order => 'current_level_id DESC'
   named_scope :exited, :conditions => ['status = "exited"'], :order => 'finished_at DESC'
   named_scope :finished, :conditions => ['finished_at IS NOT NULL'], :order => 'finished_at ASC'
@@ -15,21 +15,27 @@ class GamePassing < ActiveRecord::Base
 
   before_create :update_current_level_entered_at
 
-  def self.of(team, game)
-    self.of_team(team).of_game(game).first
+  def self.of(user, game)
+    self.of_user(user).of_game(game).first
   end
 
   def check_answer!(answer)
     answer.strip!
 
-    if correct_answer?(answer)
+    if deleted_answer?
       answered_question = current_level.find_question_by_answer(answer)
-      pass_question!(answered_question)
-      pass_level! if all_questions_answered? or question_is_gold?
+      pass_level! if all_questions_answered?
       true
-    else
-      false
+    else if correct_answer?(answer)
+        answered_question = current_level.find_question_by_answer(answer)
+        pass_question!(answered_question)
+        pass_level! if all_questions_answered? or question_is_gold?
+        true
+      else
+        false
+      end
     end
+
   end
 
   def pass_question!(question)
@@ -64,6 +70,14 @@ class GamePassing < ActiveRecord::Base
 
   def correct_answer?(answer)
     unanswered_questions.any? { |question| question.matches_any_answer(answer) }
+  end
+
+  def deleted_answer?
+    if unanswered_questions.size == 0
+      true
+    else
+      false
+    end
   end
 
   def time_at_level

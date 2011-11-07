@@ -3,14 +3,11 @@ class GamePassings < Application
 
   before :find_game, :exclude => [:exit_game]
   before :find_game_by_id, :only => [:exit_game]
-  before :find_team, :exclude => [:show_results, :index]
   before :find_or_create_game_passing, :exclude => [:show_results, :index]
   before :ensure_authenticated, :exclude => [:index, :show_results]
   before :ensure_game_is_started
-  before :ensure_team_captain, :only => [:exit_game]
   before :ensure_not_finished, :exclude => [:index, :show_results]
   before :author_finished_at, :exclude => [:index, :show_results]
-  before :ensure_team_member, :exclude => [:index, :show_results]
   before :ensure_not_author_of_the_game, :exclude => [:index, :show_results]
   before :ensure_author, :only => [:index]
   before :get_uniq_level_codes, :only => [:show_current_level]
@@ -55,7 +52,7 @@ class GamePassings < Application
       @level = Level.find(@game_passing.current_level.id)
       Log.create! :game_id => @game.id,
                   :level => @level.name,
-                  :team => @team.name,
+                  :user => @current_user.name,
                   :time => Time.now,
                   :answer => @answer
     end
@@ -82,17 +79,13 @@ protected
 
   # TODO: must be a critical section, double creation is possible!
   def find_or_create_game_passing
-    @game_passing = GamePassing.of(@team,@game)
+    @game_passing = GamePassing.of(@current_user,@game)
 
     if @game_passing.nil?
-      @game_passing = GamePassing.create! :team => @team, 
+      @game_passing = GamePassing.create! :user => @current_user,
         :game => @game,
         :current_level => @game.levels.first
     end
-  end
-
-  def find_team
-    @team = current_user.team
   end
 
   def ensure_game_is_started
@@ -100,25 +93,25 @@ protected
   end
 
   def ensure_not_author_of_the_game
-    raise Unauthorized, "Нельзя играть в собственные игры, сорри :-)" if @game.created_by?(current_user) unless @game.is_testing?
+    raise Unauthorized, "Нельзя играть в собственные игры, сорри :-)" if @game.created_by?(@current_user) unless @game.is_testing?
   end
 
   def author_finished_at
     raise Unauthorized, "Игра была завершена автором, и вы не можете в нее больше играть" if @game.author_finished?
   end
 
-  def ensure_captain_exited
+  def ensure_user_exited
     raise Unauthorized, "Команда сошла с дистанции" if @game_passing.exited?
   end
 
   def ensure_not_finished
     self.author_finished_at
-    self.ensure_captain_exited
+    self.ensure_user_exited
   end
 
   def get_uniq_level_codes
     correct_answers = []
-    log_of_level = Log.of_game(@game).of_level(@game_passing.current_level).of_team(current_user.team)
+    log_of_level = Log.of_game(@game).of_level(@game_passing.current_level).of_user(@current_user)
     entered_answers = log_of_level.map { |u| u.answer }.uniq
 
     @game_passing.current_level.questions.each do |question|

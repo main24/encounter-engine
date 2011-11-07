@@ -1,12 +1,6 @@
 <p>
-  Вы <%= @current_user.nickname %>
+  Команда <%= @current_user.name %>
 </p>
-
-<br />
-
-<%= partial 'my_team' %>
-  
-<br />
 
 <%= partial 'my_games' %>
 
@@ -21,11 +15,3 @@
 <br />
 
 <%= partial 'dashboard/finished_games' %>
-
-<br />
-
-<%= partial 'games/game_entries', :game_entries => @game_entries  %>
-
-<br />
-
-<%= partial 'games/teams', :teams => @teams  %>

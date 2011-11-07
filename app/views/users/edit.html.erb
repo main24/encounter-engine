@@ -4,11 +4,8 @@
 <%= error_messages_for @user, :header => "<h2>Ошибка</h2>" %>
 
 <%= form_for @user, :action => resource(@user) do %>
-  <p><%= text_field :nickname, :label => "Ваше имя" %></p>
-  <p><%= text_field :date_of_birth, :label => "Дата рождения" %></p>
-  <p><%= text_field :icq_number, :label => "Номер ICQ" %></p>
-  <p><%= text_field :jabber_id, :label => "Jabber ID" %></p>
-  <p><%= text_field :phone_number, :label => "Контактный телефон" if @user.captain?%></p>
+  <p><%= text_field :name, :label => "Название команды" %></p>
+  <p><%= text_field :phone_number, :label => "Контактный телефон"%></p>
   <br/>
   <p><%= text_field :password, :label => "Новый пароль" %></p>
   <p><%= text_field :password_confirmation, :label => "Подтверждение пароля" %></p>

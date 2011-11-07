@@ -24,7 +24,7 @@
     %>
     <% game_passings_sorted_by_current_level_position.each do |game_passing| %>
       <tr>
-        <td><%= game_passing.team.name %></td>
+        <td><%= game_passing.user.name %></td>
         <% if game_passing.exited? %>
           <td>(Сошли с дистанции)</td>
           <td><%= Level.find(game_passing.current_level_id).name %></td>
@@ -37,10 +37,10 @@
         <% end %>
         <td>
           <% unless game_passing.finished? and not game_passing.exited? %>
-            <em><%= link_to "(лог по уровню)", "/logs/level/#{game_passing.game_id}/#{game_passing.team_id}" %></em>
+            <em><%= link_to "(лог по уровню)", "/logs/level/#{game_passing.game_id}/#{game_passing.user_id}" %></em>
           <% end %>
         </td>
-        <td><em><%= link_to "(лог по игре)", "/logs/game/#{game_passing.game_id}/#{game_passing.team_id}" %></em></td>
+        <td><em><%= link_to "(лог по игре)", "/logs/game/#{game_passing.game_id}/#{game_passing.user_id}" %></em></td>
         </tr>
     <% end %>
   </tbody>
