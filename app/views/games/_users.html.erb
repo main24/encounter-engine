@@ -3,6 +3,11 @@
     Участвуют команды:
   </legend>
 
+  <%if @current_user.is_master%>
+    <%= link_to 'Добавить команду', resource(@game, :game_entries, :new) %>
+    <br/>
+  <% end %>
+
   <p>
     <% @users.each do |user| %>
       <p>

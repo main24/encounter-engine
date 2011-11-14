@@ -1,6 +1,6 @@
 class Questions < Application
   before :find_game
-  before :ensure_author
+  before :ensure_master
   before :find_level
   before :build_question, :only => [:new, :create]
   before :find_question, :only => [:delete]

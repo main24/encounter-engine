@@ -3,9 +3,7 @@ class Hints < Application
   before :find_game
   before :build_hint, :only => [:new, :create]
   before :find_hint, :only => [:edit, :update, :delete]
-
-  before :ensure_author
-  before :ensure_game_was_not_started, :only => [:new, :create, :edit, :update]  
+  before :ensure_master
 
   def new
     render

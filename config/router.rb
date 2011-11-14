@@ -33,11 +33,8 @@ Merb::Router.prepare do
     resources :games
   end
 
-  resources :teams
-
-  resources :invitations
-
   resources :games do |games|
+    games.resources :game_entries
     games.resources :levels do |levels|
       levels.resources :hints
       levels.resources :questions do |questions|
@@ -53,14 +50,12 @@ Merb::Router.prepare do
   match('/play/:game_id', :method => :get).to(:controller => :game_passings, :action => :show_current_level).name(:show_current_level)
   match('/play/:game_id', :method => :post).to(:controller => :game_passings, :action => :post_answer).name(:post_answer)
 
-#  match('/stats/:game_id', :method => :get).to(:controller => :game_passings, :action => :index).name(:game_stats)
   match('/stats/:action/:game_id').to(:controller => :game_passings).name(:game_stats)
   match('/logs/livechannel/:game_id').to(:controller => :logs, :action => :show_live_channel).name(:show_live_channel) # прямой эфир
-  match('/logs/level/:game_id/:team_id').to(:controller => :logs, :action => :show_level_log).name(:show_level_log) # лог по уровню
-  match('/logs/game/:game_id/:team_id').to(:controller => :logs, :action => :show_game_log).name(:show_game_log) # лог по игре
+  match('/logs/level/:game_id/:user_id').to(:controller => :logs, :action => :show_level_log).name(:show_level_log) # лог по уровню
+  match('/logs/game/:game_id/:user_id').to(:controller => :logs, :action => :show_game_log).name(:show_game_log) # лог по игре
   match('/logs/full/:game_id').to(:controller => :logs, :action => :show_full_log).name(:show_full_log) # полный лог по игре
-  
-  match('/game_entries/new/:game_id/:team_id').to(:controller => :game_entries, :action => :new).name(:new) # отправка заявки
+
   match('/signup').to(:controller => :users, :action => :new).name(:signup)
   match('/dashboard').to(:controller => :dashboard).name(:dashboard)
   match('/teams/edit').to(:controller => :teams, :action => :edit).name(:edit)

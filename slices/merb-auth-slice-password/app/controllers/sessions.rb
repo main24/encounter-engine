@@ -22,7 +22,7 @@ class MerbAuthSlicePassword::Sessions < MerbAuthSlicePassword::Application
   
   private   
   # @overwritable
-  def redirect_after_login    
+  def redirect_after_login
     redirect_back_or "/dashboard", :ignore => [slice_url(:login), slice_url(:logout)]
   end
   

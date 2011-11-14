@@ -1,0 +1,39 @@
+<% require_js 'jquery.js', 'jquery.autocomplete.js' %>
+<% require_css 'jquery.autocomplete.css' %>
+
+<script>
+
+    $(document).ready(function() {
+
+        var data = new Array();
+        <% @all_users.each do |user| %>
+            <%if user!=@current_user%>
+                data.push({nick: '<%=user.name%>', email: '<%=user.email%>'});
+            <%end%>
+        <% end %>
+        $("#game_entry_recepient_name").autocomplete(data, {
+            minChars: 1,
+            width: 310,
+            matchContains: "word",
+            autoFill: false,
+            formatItem: function(row, i, max) {
+                return i + "/" + max + ": \"" + row.nick + "\" [" + row.email + "]";
+            },
+            formatMatch: function(row) {
+                return row.nick + " " + row.email;
+            },
+            formatResult: function(row) {
+                return row.nick;
+            }
+        });
+    })
+
+</script>
+
+<%= error_messages_for @game_entry, :header => "<h2>Ошибка</h2>" %>
+
+<%= form_for @game_entry, :action => resource(@game, :game_entries) do %>
+    <%= text_field :recepient_name, :label => "Пригласить команду" %>
+    <%= submit "Пригласить" %>
+<% end =%>
+<em><%= link_to "(отменить)", resource(@game) %></em>

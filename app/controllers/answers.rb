@@ -1,6 +1,6 @@
 class Answers < Application
   before :find_game
-  before :ensure_author
+  before :ensure_master
   before :find_level
   before :find_question
   before :find_answers

@@ -1,7 +1,7 @@
 class Logs < Application
   before :ensure_authenticated
   before :find_game
-  before :ensure_author, :only => [:show_live_channel, :show_level_log, :show_game_log]
+  before :ensure_master, :only => [:show_live_channel, :show_level_log, :show_game_log]
   before :find_user, :only => [:show_level_log, :show_game_log]
   before :find_level, :only => [:show_level_log, :show_game_log]
 
@@ -15,12 +15,12 @@ class Logs < Application
   end
 
   def show_level_log
-    @logs = Log.of_game(@game).of_user(@current_user).of_level(@level)
+    @logs = Log.of_game(@game).of_user(@user).of_level(@level)
     render
   end
 
   def show_game_log
-    @logs = Log.of_game(@game).of_user(@current_user)
+    @logs = Log.of_game(@game).of_user(@user)
     render
   end
 
@@ -38,11 +38,11 @@ protected
   end  
   
   def find_user
-    @current_user = User.find(params[:user_id])
+    @user = User.find(params[:user_id])
   end
 
   def find_level
-    @level = @current_user.current_level_in(@game)
+    @level = @user.current_level_in(@game)
   end
 
 end

@@ -6,11 +6,6 @@
   <div class="is-draft-message">Черновик</div>
 <% end %>
 
-
-<p>
-  <em>Автор</em> - <strong><%= @game.author.name %></strong>
-</p>
-
 <p>
   <% unless @game.starts_at.nil? %>
     <em>Начало игры</em>: <%= @game.starts_at.strftime("%Y-%m-%d %H:%M") %>
@@ -33,6 +28,8 @@
 <p>
   <%= @game.description %>
 </p>
+
+<%if @current_user.is_master%>
 <p>
   <em>Максимальное количество команд:</em>
 </p>
@@ -44,10 +41,11 @@
     <%= @game.max_user_number %>
   <% end %>
 </p>
+<% end %>
 
 <br />
 
-<% if logged_in? and @current_user.author_of?(@game) %>
+<% if logged_in? and @current_user.is_master %>
 
   <fieldset>
     <legend>
@@ -63,9 +61,6 @@
     </p>
   </fieldset>
   <br />
-      <%= partial 'games/game_entries', :game_entries => @game_entries  %>
-
-    <br/>
 
     <%= partial 'games/users', :users => @users  %>
   <br />

@@ -1,17 +1,21 @@
 <p>
-  Команда <%= @current_user.name %>
+  <%if ! @current_user.is_master%>
+    Команда <%= @current_user.name%>
+  <% end %>
 </p>
-
-<%= partial 'my_games' %>
-
-<br />
 
 <%= partial 'shared/current_games' %>
 
 <br />
 
+<% if @current_user.is_master%>
+    <%= partial 'my_games' %>
+
+    <br />
+<% end %>
+
 <%= partial 'dashboard/coming_games' %>
 
-<br />
+    <br />
 
 <%= partial 'dashboard/finished_games' %>

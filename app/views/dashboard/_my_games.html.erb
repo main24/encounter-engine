@@ -13,6 +13,6 @@
   <hr class="short-line" />
 
   <p>
-    <%= link_to "Создать игру >> ", resource(:games, :new) %>
+    <%= link_to "Создать игру >> ", resource(:games, :new) if @current_user.is_master%>
   </p>
 </fieldset>

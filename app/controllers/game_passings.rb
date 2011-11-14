@@ -10,6 +10,7 @@ class GamePassings < Application
   before :author_finished_at, :exclude => [:index, :show_results]
   before :ensure_not_author_of_the_game, :exclude => [:index, :show_results]
   before :ensure_author, :only => [:index]
+  before :ensure_master, :only => [:index]
   before :get_uniq_level_codes, :only => [:show_current_level]
 
   provides :json

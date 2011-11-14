@@ -29,6 +29,16 @@ When %r{логинюсь как (.*)$} do |nickname|
   Then %{должен увидеть "#{nickname}"}
 end
 
+When %r{логинюсь в качестве админа$} do
+  current_user = User.new :email=>"master@example.com", :name=>"Master", :is_master=>true, :password=>"password", :password_confirmation=>"password"
+  When %{я захожу по адресу /login}
+  When %{ввожу "master@example.com" в поле "Email"}
+  When %{ввожу "password" в поле "Пароль"}
+  When %{нажимаю "Войти"}
+  Then %{должен быть перенаправлен в личный кабинет}
+  Then %{не должен видеть "Команда Master"}
+end
+
 Then %r{не должен быть залогинен$}i do
   Then %{я захожу по адресу /dashboard}
   Then %{должен увидеть "Вы не авторизованы для посещения этой страницы. Попробуйте выполнить вход"}

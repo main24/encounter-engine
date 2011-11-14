@@ -1,4 +1,4 @@
-Given %r{зарегистрирован пользователь (.*)$}i do |nickname|
+Given %r{зарегистрирована команда (.*)$}i do |nickname|
   When %{я пытаюсь зарегистрироваться как #{nickname}}
   Then %{То я должен быть перенаправлен в личный кабинет}
   Then %{должен увидеть "#{nickname}"}
@@ -21,4 +21,8 @@ Then %r{могу зарегистрироваться как (.*)} do |nickname|
   When %{я пытаюсь зарегистрироваться как #{nickname}}
   Then %{должен быть перенаправлен в личный кабинет}
   Then %{должен увидеть "#{nickname}"}
+end
+
+Given %r{зарегистрирован админ (.*)}i do |name|
+  current_user = User.new :email=>"master@example.com", :name=>"#{name}", :is_master=>true, :password=>"password", :password_confirmation=>"password"
 end

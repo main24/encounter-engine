@@ -1,6 +1,6 @@
 class Levels < Application
   before :find_game
-  before :ensure_author
+  before :ensure_master
   before :ensure_game_was_not_started, :only => [:new, :create, :delete]
   before :build_level, :only => [:new, :create]
   before :find_level, :exclude => [:new, :create]

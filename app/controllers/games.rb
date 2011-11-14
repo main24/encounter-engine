@@ -4,8 +4,7 @@ class Games < Application
   before :find_game, :only => [:show, :edit, :update, :delete, :end_game]
   before :ensure_author_if_game_is_draft, :only => [:show]
   before :ensure_author_if_no_start_time, :only =>[:show]
-  before :ensure_author, :only => [:edit, :update]
-  #before :ensure_game_was_not_started, :only => [:edit, :update]
+  before :ensure_master, :only => [:new, :create, :edit, :update, :delete]
   before :max_user_number_from_nz, :only => [:create, :update]
 
   def index
@@ -31,7 +30,6 @@ class Games < Application
   end
 
   def show
-    @game_entries = GameEntry.of_game(@game).with_status("new")
     @users = []
     GameEntry.of_game(@game).with_status("accepted").each do |entry|
       @users << User.find(entry.user_id)
@@ -115,11 +113,11 @@ class Games < Application
   end
 
   def ensure_author_if_game_is_draft
-    ensure_author if game_is_draft?
+    ensure_master if game_is_draft?
   end
 
   def ensure_author_if_no_start_time
-    ensure_author if no_start_time?
+    ensure_master if no_start_time?
   end
 
   def max_user_number_from_nz

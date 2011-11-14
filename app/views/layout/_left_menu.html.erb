@@ -13,7 +13,7 @@
   </p>
 
   <p>
-    <%= link_to "Все игры домена", resource(:games) %>
+    <%= link_to "Все игры домена", resource(:games) if @current_user.is_master%>
   </p>
 
   <p>

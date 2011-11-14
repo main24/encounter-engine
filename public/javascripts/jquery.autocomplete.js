@@ -442,7 +442,7 @@ $.Autocompleter.Cache = function(options) {
 			s = s.toLowerCase();
 		var i = s.indexOf(sub);
 		if (options.matchContains == "word"){
-			i = s.toLowerCase().search("\\b" + sub.toLowerCase());
+			i = s.toLowerCase().search("\\S\*" + sub.toLowerCase());
 		}
 		if (i == -1) return false;
 		return i == 0 || options.matchContains;
@@ -452,7 +452,7 @@ $.Autocompleter.Cache = function(options) {
 		if (length > options.cacheLength){
 			flush();
 		}
-		if (!data[q]){ 
+		if (!data[q]){
 			length++;
 		}
 		data[q] = value;
@@ -540,7 +540,7 @@ $.Autocompleter.Cache = function(options) {
 						var c = data[k];
 						$.each(c, function(i, x) {
 							// if we've got a match, add it to the array
-							if (matchSubset(x.value, q)) {
+							if (matchSubset(x.value, decodeURIComponent(q))) {
 								csub.push(x);
 							}
 						});
@@ -549,16 +549,16 @@ $.Autocompleter.Cache = function(options) {
 				return csub;
 			} else 
 			// if the exact item exists, use it
-			if (data[q]){
-				return data[q];
+			if (data[decodeURIComponent(q)]){
+				return data[decodeURIComponent(q)];
 			} else
 			if (options.matchSubset) {
-				for (var i = q.length - 1; i >= options.minChars; i--) {
-					var c = data[q.substr(0, i)];
+				for (var i = decodeURIComponent(q).length - 1; i >= options.minChars; i--) {
+					var c = data[decodeURIComponent(q).substr(0, i)];
 					if (c) {
 						var csub = [];
 						$.each(c, function(i, x) {
-							if (matchSubset(x.value, q)) {
+							if (matchSubset(x.value, decodeURIComponent(q))) {
 								csub[csub.length] = x;
 							}
 						});

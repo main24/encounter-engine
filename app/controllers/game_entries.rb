@@ -1,48 +1,24 @@
 class GameEntries < Application
   before :ensure_authenticated
-  before :find_game, :only=>:new
-  before :find_entry, :exclude =>:new
-  before :ensure_author, :only => [:accept, :reject]
+  before :ensure_master
+  before :find_game, :only=> [:new, :create, :build_entry]
+  before :find_entry, :exclude => [:new, :create, :build_entry]
+  before :build_entry, :only => [:new, :create]
 
   def new
-    if @game.can_request?
-      @game_entry = GameEntry.create! :status => 'new', :game => @game, :user => @current_user
-      @game.reserve_place_for_user!
-    end
-    redirect url(:dashboard)
+    only_provides :html
+    @all_users = User.find :all
+    render
   end
 
-  def reopen
-    if @game.can_request?
-      if @entry.status != "accepted"
-        @entry.reopen!
-      end
+  def create
+    if @game_entry.save
       @game.reserve_place_for_user!
+      redirect resource(@game)
+    else
+      @all_users = User.find :all
+      render :new
     end
-    redirect url(:dashboard)
-  end
-  
-  def accept
-    if @entry.status == "new"
-       @entry.accept!
-    end
-    redirect url(:dashboard)
-  end
-  
-  def reject
-    if @entry.status == "new"
-       @entry.reject!
-    end
-    @game.free_place_of_user!
-    redirect url(:dashboard)
-  end
-
-  def recall
-    if @entry.status == "new"
-       @entry.recall!
-    end
-    @game.free_place_of_user!
-    redirect url(:dashboard)
   end
 
   def cancel
@@ -54,6 +30,15 @@ class GameEntries < Application
   end
 
 protected
+
+  def build_entry
+    if @game.can_request?
+      @game_entry = GameEntry.new(params[:game_entry])
+      @game_entry.game_id = @game.id
+      @game_entry.status = "accepted"
+    end
+  end
+
   def find_game
     @game = Game.find(params[:game_id])
   end
