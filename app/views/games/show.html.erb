@@ -22,6 +22,15 @@
 </p>
 
 <p>
+  <%if @game.is_free %>
+    Доступность игры: <strong>Для всех</strong>
+  <% else %>
+    Доступность игры: <strong>Необходима регистрация</strong>
+  <% end %>
+</p>
+
+
+<p>
   <em>Описание:</em>
 </p>
 
@@ -46,10 +55,10 @@
   </fieldset>
   <br />
 
-    <%= partial 'games/users', :users => @users  %>
+    <%= partial 'users', :users => @users %>
   <br />
   <p>
-    <%= link_to "Редактировать эту игру", resource(@game, :edit) if ! @game.started? %>
+    <%= link_to "Редактировать эту игру", resource(@game, :edit) %>
   </p>
 
   <p>

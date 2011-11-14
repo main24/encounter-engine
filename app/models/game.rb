@@ -92,6 +92,14 @@ class Game < ActiveRecord::Base
     self.is_testing
   end
 
+  def is_registered_user?(user)
+    @registered_users = []
+    GameEntry.of_game(self).with_status("accepted").each do |entry|
+      @registered_users << User.find(entry.user_id)
+    end
+    @registered_users.any? { |users| users.email == user.email }
+  end
+
   protected
 
   def game_starts_in_the_future

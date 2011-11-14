@@ -8,6 +8,11 @@
     <p><%= text_area :description, :label => "Описание" %></p>
     <p><%= text_field :starts_at, :label => "Начало игры" %> <input id="calendar-switch" type="button" value="..."/></p>
     <br/><p><%= text_field :registration_deadline, :label => "Крайний срок регистрации " %> <input id="calendar-switch2" type="button" value="..."/></p>
+    <br/><p><%= check_box :is_free, :label => "Доступна для всех?"%></p>
+    <br/>
+    <br/><em>Доступность игры означает, что в нее могут играть все зарегистрированные команды.</em>
+    <br/><em>Если игра недоступна для всех, команду необходимо назначить на игру.</em>
+    <br/>
     <br/><p><%= check_box :is_draft, :label => "Черновик?" %></p>
     <br/>
     <%= submit "Сохранить" %>

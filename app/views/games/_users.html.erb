@@ -3,15 +3,18 @@
     Участвуют команды:
   </legend>
 
-  <%if @current_user.is_master%>
+  <%if logged_in? && @current_user.is_master && (!@game.is_free && !@game.started?) %>
     <%= link_to 'Добавить команду', resource(@game, :game_entries, :new) %>
     <br/>
+  <% else if @game.is_free %>
+    <em>Все команды могут участвовать в игре</em>
+  <% end %>
   <% end %>
 
   <p>
     <% @current_game_entries.each do |user_name, entry| %>
       <p>
-        <strong><%= user_name %></strong> <%= link_to '(отозвать)', resource(@game, entry, :delete)  if @current_user.is_master%>
+        <strong><%= user_name if !@game.is_free %></strong> <%= link_to '(отозвать)', resource(@game, entry, :delete)  if logged_in? && @current_user.is_master && (!@game.is_free && !@game.started?)%>
       </p>
     <% end %>
   </p>

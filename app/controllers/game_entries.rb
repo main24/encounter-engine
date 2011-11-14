@@ -3,6 +3,7 @@ class GameEntries < Application
   before :ensure_master
   before :find_game, :only=> [:new, :create, :build_entry, :delete]
   before :find_entry, :exclude => [:new, :create, :build_entry]
+  before :ensure_game_not_started_or_free, :only => [:new, :create, :build_entry, :delete]
   before :build_entry, :only => [:new, :create]
 
   def new
@@ -53,6 +54,10 @@ protected
     if @entry
       @game = Game.find(@entry.game.id)
     end
+  end
+
+  def ensure_game_not_started_or_free
+    raise Unauthorized, "После начала игры нельзя изменять состав участников" if @game.started? && !@game.is_free
   end
 
 end

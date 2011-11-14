@@ -9,8 +9,8 @@ class GamePassings < Application
   before :ensure_not_finished, :exclude => [:index, :show_results]
   before :author_finished_at, :exclude => [:index, :show_results]
   before :ensure_not_author_of_the_game, :exclude => [:index, :show_results]
-  before :ensure_author, :only => [:index]
   before :ensure_master, :only => [:index]
+  before :ensure_registered_on_the_game, :only => [:show_current_level]
   before :get_uniq_level_codes, :only => [:show_current_level]
 
   provides :json
@@ -103,6 +103,10 @@ protected
 
   def ensure_user_exited
     raise Unauthorized, "Команда сошла с дистанции" if @game_passing.exited?
+  end
+
+  def ensure_registered_on_the_game
+    raise Unauthorized, "Вы не зарегистрированы на игру" if !@game.is_free && !@game.is_registered_user?(@current_user)
   end
 
   def ensure_not_finished
