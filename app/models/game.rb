@@ -70,7 +70,7 @@ class Game < ActiveRecord::Base
   end
 
   def reserve_place_for_user!
-    self.requested_users_number+=1;
+    self.requested_users_number+=1
     self.save
   end
 

@@ -29,22 +29,6 @@
   <%= @game.description %>
 </p>
 
-<%if @current_user.is_master%>
-<p>
-  <em>Максимальное количество команд:</em>
-</p>
-<p>
-  <% if @game.max_user_number.equal?(10000) or @game.max_user_number.equal?(0) or @game.max_user_number.nil? %>
-    Неограничено
-    <% @game.max_user_number = 10000 %>
-  <% else %>
-    <%= @game.max_user_number %>
-  <% end %>
-</p>
-<% end %>
-
-<br />
-
 <% if logged_in? and @current_user.is_master %>
 
   <fieldset>

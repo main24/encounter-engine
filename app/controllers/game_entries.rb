@@ -1,7 +1,7 @@
 class GameEntries < Application
   before :ensure_authenticated
   before :ensure_master
-  before :find_game, :only=> [:new, :create, :build_entry]
+  before :find_game, :only=> [:new, :create, :build_entry, :delete]
   before :find_entry, :exclude => [:new, :create, :build_entry]
   before :build_entry, :only => [:new, :create]
 
@@ -27,6 +27,11 @@ class GameEntries < Application
     end
     @game.free_place_of_user!
     redirect url(:dashboard)
+  end
+
+  def delete
+    @entry.destroy
+    redirect resource(@game)
   end
 
 protected

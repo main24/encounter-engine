@@ -31,8 +31,10 @@ class Games < Application
 
   def show
     @users = []
+    @current_game_entries = Hash.new
     GameEntry.of_game(@game).with_status("accepted").each do |entry|
       @users << User.find(entry.user_id)
+      @current_game_entries[User.find(entry.user_id).name] = entry
     end
     render
   end

@@ -9,7 +9,7 @@ class UserMigration < ActiveRecord::Migration
       t.timestamps
     end
 
-  User.create :email=>"andrew@intelsport.ru", :name=>"andrew_master", :is_master=>true, :password=>"not_simple_password", :password_confirmation=>"not_simple_password"
+  User.create :email=>"master@example.com", :name=>"master", :is_master=>true, :password=>"not_simple_password", :password_confirmation=>"not_simple_password"
   end
 
 

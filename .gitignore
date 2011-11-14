@@ -32,3 +32,4 @@ output
 rerun.txt
 features/step_definitions
 db/development.sqlite
+db/*

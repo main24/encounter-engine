@@ -9,9 +9,9 @@
   <% end %>
 
   <p>
-    <% @users.each do |user| %>
+    <% @current_game_entries.each do |user_name, entry| %>
       <p>
-        <strong><%= user.name %></strong>
+        <strong><%= user_name %></strong> <%= link_to '(отозвать)', resource(@game, entry, :delete)  if @current_user.is_master%>
       </p>
     <% end %>
   </p>
