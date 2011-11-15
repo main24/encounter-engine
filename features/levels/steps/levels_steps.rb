@@ -1,11 +1,10 @@
 Given %r(в игре "(.*)" следующие задания:$)i do |game_name, levels_table|
   game = Game.find_by_name(game_name)
-  author_name = game.author.nickname
 
   levels_table.hashes.each do |hash|
     level_name = hash['Название']
     code = hash['Код']
-    Given %{#{author_name} добавляет задание "#{level_name}" с кодом "#{code}" в игру "#{game_name}"}
+    Given %{админ добавляет задание "#{level_name}" с кодом "#{code}" в игру "#{game_name}"}
   end
 end
 
@@ -24,43 +23,41 @@ Given /добавляю задание "([^\"]*)" с кодом "([^\"]*)" в и
   Then %{должен увидеть "#{level_name}"}
 end
 
-Given %r{^(.*) добавляет задание "([^\"]*)" в игру "(.*)"}i do |user_name, level_name, game_name|
-  Given %{я логинюсь как #{user_name}}
+Given %r{^админ добавляет задание "([^\"]*)" в игру "(.*)"}i do |level_name, game_name|
+  Given %{я логинюсь в качестве админа}
   Given %{добавляю задание "#{level_name}" в игру "#{game_name}"}
 end
 
-Given %r{^(.+) добавляет задание "([^\"]*)" с кодом "([^\"]*)" в игру "([^\"]*)"$}i do |user_name, level_name, code, game_name|
-  Given %{я логинюсь как #{user_name}}
+Given %r{^админ добавляет задание "([^\"]*)" с кодом "([^\"]*)" в игру "([^\"]*)"$}i do |level_name, code, game_name|
+  Given %{я логинюсь в качестве админа}
   Given %{добавляю задание "#{level_name}" с кодом "#{code}" в игру "#{game_name}"}
 end
 
 Given /в игру "([^\"]*)" добавлено задание "([^\"]*)" с кодом "([^\"]*)"$/ do |game_name, level_name, code|
   game = Game.find_by_name(game_name)
-  author_name = game.author.nickname
 
-  Given %{я логинюсь как #{author_name}}
+  Given %{я логинюсь в качестве админа}
   Given %{добавляю задание "#{level_name}" с кодом "#{code}" в игру "#{game_name}"}
 end
 
 Given /^в игру "([^\"]*)" добавлено задание "([^\"]*)" со следующими кодами:$/ do |game_name, level_name, table|
   game = Game.find_by_name(game_name)
-  author_name = game.author.nickname
 
   codes = table.raw.map(&:first)
   code_count = codes.size
 
   first_code = codes.shift
-  Given %{#{author_name} добавляет задание "#{level_name}" с кодом "#{first_code}" в игру "#{game_name}"}
+  Given %{админ добавляет задание "#{level_name}" с кодом "#{first_code}" в игру "#{game_name}"}
 
   codes.each do |code|
-    Given %{#{author_name} добавляет код "#{code}" в задание "#{level_name}"}
+    Given %{админ добавляет код "#{code}" в задание "#{level_name}"}
   end
 
   When %{я захожу в профиль задания "#{level_name}"}
   Then %{должен увидеть "Коды (#{code_count})"}
 end
 
-Given /^([^\"]*) добавляет код "([^\"]*)" в задание "([^\"]*)"$/ do |author_name, code, level_name|
+Given /^админ добавляет код "([^\"]*)" в задание "([^\"]*)"$/ do |code, level_name|
   When %{я захожу в профиль задания "#{level_name}"}
   And %{иду по ссылке "Добавить ещё один код"}
   And %{ввожу "#{code}" в поле "Код"}
@@ -70,12 +67,11 @@ Given /^([^\"]*) добавляет код "([^\"]*)" в задание "([^\"]*
 end
 
 Given /^добавляю код "([^\"]*)" в задание "([^\"]*)"$/ do |code, level_name|
-  author = Level.find_by_name(level_name).game.author.nickname
-  Given %{#{author} добавляет код "#{code}" в задание "#{level_name}"}
+  Given %{админ добавляет код "#{code}" в задание "#{level_name}"}
 end
 
-Given /^пользователем (.*) создана игра "(.*)" со следующими заданиями:$/ do |author_name, game_name, levels_table|
-  Given %{пользователем #{author_name} создана игра "#{game_name}"}
+Given /^админом создана игра "(.*)" со следующими заданиями:$/ do |game_name, levels_table|
+  Given %{админом создана игра "#{game_name}"}
 
   levels = levels_table.raw.map(&:first)
   levels.each.each do |level_name|

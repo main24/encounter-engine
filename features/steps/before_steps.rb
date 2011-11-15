@@ -22,5 +22,5 @@ def set_common_password
 end
 
 def set_admin
-  @admin = User.create! :email=>"master@example.com", :name=>"Master", :is_master=>true, :password=>"password", :password_confirmation=>"password"
+  @admin = User.create! :email=>"master_test@example.com", :name=>"Master_test", :is_master=>true, :password=>"password", :password_confirmation=>"password"
 end

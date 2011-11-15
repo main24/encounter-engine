@@ -1,8 +1,8 @@
 Given /команда (.*) находится на уровне "(.*)" игры "(.*)"/ do |team_name, level_name, game_name|
-  team = Team.find_by_name(team_name)
+  team = User.find_by_name(team_name)
   game = Game.find_by_name(game_name)
 
-  Given %{я логинюсь как #{team.captain.nickname}}
+  Given %{я логинюсь как #{team.name}}
   Given %{захожу в игру "#{game_name}"}
 
   current_level = team.current_level_in(game)
@@ -35,21 +35,21 @@ When /ввожу код "([^\"]*)" в игре "([^\"]*)"/ do |code, game_name|
 end
 
 When /команда (.*) вводит правильный код текущего уровня игры "(.*)"/ do |team_name, game_name|
-  team = Team.find_by_name(team_name)
+  team = User.find_by_name(team_name)
   game = Game.find_by_name(game_name)
   current_level = team.current_level_in(game) || game.levels.first
 
-  Given %{я логинюсь как #{team.captain.nickname}}
+  Given %{я логинюсь как #{team.name}}
   When %{ввожу код "#{current_level.questions.first.answers.first.value}" в игре "#{game_name}"}
   Then %{должен увидеть "#{current_level.next.name}"}
 end
 
 When /команда (.*) вводит правильный код последнего уровня игры "(.*)"/ do |team_name, game_name|
-  team = Team.find_by_name(team_name)
+  team = User.find_by_name(team_name)
   game = Game.find_by_name(game_name)
   current_level = game.levels.last
 
-  Given %{я логинюсь как #{team.captain.nickname}}
+  Given %{я логинюсь как #{team.name}}
   When %{ввожу код "#{current_level.questions.first.answers.first.value}" в игре "#{game_name}"}
   Then %{должен увидеть "Поздравляем"}
 end
@@ -58,8 +58,6 @@ When /захожу в игру "([^\"]*)"/ do |game_name|
   game = Game.find_by_name(game_name)
 
   When %{я захожу в личный кабинет}
-
-
 
   within "#game-#{game.id}" do |scope|
     scope.click_link "Играть!"
@@ -81,18 +79,18 @@ When /захожу в статистику игры "(.*)"$/ do |game_name|
 end
 
 Given /в "(.*)" команда "(.*)" на задании "(.*)" игры "(.*)" ввела код "(.*)"$/ do |datetime, team_name, level_name, game_name, code|
-  team = Team.find_by_name(team_name)
+  team = User.find_by_name(team_name)
 
   Given %{сейчас "#{datetime}"}
-  Given %{я логинюсь как #{team.captain.nickname}}
+  Given %{я логинюсь как #{team.name}}
   Given %{команда #{team_name} находится на уровне "#{level_name}" игры "#{game_name}"}
   And %{ввожу код "#{code}"}
 end
 
 Given /^команда (.*) сошла с дистанции игры "([^"]*)"$/ do |team_name, game_name|
-  team = Team.find_by_name(team_name)
+  team = User.find_by_name(team_name)
 
-  Given %{я логинюсь как #{team.captain.nickname}}
+  Given %{я логинюсь как #{team.name}}
   Given %{я захожу в игру "#{game_name}"}
   Given %{ иду по ссылке "Сойти с дистанции"}
 end

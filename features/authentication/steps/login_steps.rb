@@ -30,9 +30,9 @@ When %r{логинюсь как (.*)$} do |nickname|
 end
 
 When %r{логинюсь в качестве админа$} do
-  current_user = User.new :email=>"master@example.com", :name=>"Master", :is_master=>true, :password=>"password", :password_confirmation=>"password"
+  current_user = User.new :email=>"master_test@example.com", :name=>"Master_test", :is_master=>true, :password=>"password", :password_confirmation=>"password"
   When %{я захожу по адресу /login}
-  When %{ввожу "master@example.com" в поле "Email"}
+  When %{ввожу "master_test@example.com" в поле "Email"}
   When %{ввожу "password" в поле "Пароль"}
   When %{нажимаю "Войти"}
   Then %{должен быть перенаправлен в личный кабинет}
