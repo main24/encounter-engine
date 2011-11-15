@@ -76,6 +76,7 @@
 
 <% if @game_passing.current_level.multi_question? %>
   <div>
+
     Правильных кодов введено: <%= @game_passing.answered_questions.size %> из
     <% if @game_passing.current_level.has_gold_question? %>
       <%= @game_passing.current_level.questions.count - 1 %>

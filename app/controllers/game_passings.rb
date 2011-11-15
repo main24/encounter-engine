@@ -106,7 +106,7 @@ protected
   end
 
   def ensure_registered_on_the_game
-    raise Unauthorized, "Вы не зарегистрированы на игру" if !@game.is_free && !@game.is_registered_user?(@current_user)
+    raise Unauthorized, "Вы не зарегистрированы на игру" if !@game.is_free && !@game.is_registered_user?(@current_user) && (!@current_user.is_master && !@game.is_testing?)
   end
 
   def ensure_not_finished
@@ -125,5 +125,7 @@ protected
       end
     end
     @entered_correct_answers = entered_answers & correct_answers
+    @game_passing.answered_questions.clear
+    @game_passing.answered_questions = @entered_correct_answers
   end
 end

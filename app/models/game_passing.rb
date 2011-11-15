@@ -24,7 +24,7 @@ class GamePassing < ActiveRecord::Base
 
     if deleted_answer?
       answered_question = current_level.find_question_by_answer(answer)
-      pass_level! if all_questions_answered?
+      pass_level! if all_questions_answered? or question_is_gold?
       true
     else if correct_answer?(answer)
         answered_question = current_level.find_question_by_answer(answer)
@@ -38,8 +38,8 @@ class GamePassing < ActiveRecord::Base
 
   end
 
-  def pass_question!(question)
-    answered_questions << question
+  def pass_question!(current_question)
+    answered_questions << current_question
     save!
   end
 

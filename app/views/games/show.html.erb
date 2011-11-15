@@ -58,7 +58,7 @@
     <%= partial 'users', :users => @users %>
   <br />
   <p>
-    <%= link_to "Редактировать эту игру", resource(@game, :edit) %>
+    <%= link_to "Редактировать эту игру", resource(@game, :edit) if ! @game.started? %>
   </p>
 
   <p>
