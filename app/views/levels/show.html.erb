@@ -84,7 +84,7 @@
 <br />
 
 <p>
-  <%= link_to "Удалить этот уровень", resource(@game, @level, :delete) %> <br />
+  <%= link_to "Удалить этот уровень", resource(@game, @level, :delete) if !@game.started? %> <br />
 </p>
 
 <br />
