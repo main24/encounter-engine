@@ -52,9 +52,9 @@ class Game < ActiveRecord::Base
 
   def place_of(user)
     game_passing = GamePassing.of(user, self)
-    return nil unless game_passing and game_passing.finished?
+    return nil unless game_passing and (game_passing.finished? and !game_passing.exited?)
 
-    count_of_finished_before = GamePassing.of_game(self).finished_before(game_passing.finished_at).count
+    count_of_finished_before = GamePassing.of_game(self).finished_before(game_passing.finished_at).finished_self.count
     count_of_finished_before + 1
   end
 

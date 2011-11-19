@@ -9,7 +9,8 @@ class GamePassing < ActiveRecord::Base
   named_scope :of_game, lambda { |game| { :conditions => { :game_id => game.id } } }
   named_scope :of_user, lambda { |user| { :conditions => { :user_id => user.id } } }
   named_scope :ended_by_author, :conditions => ['status = "ended"'], :order => 'current_level_id DESC'
-  named_scope :exited, :conditions => ['status = "exited"'], :order => 'finished_at DESC'
+  named_scope :exited, :conditions => ['status ="exited"'], :order => 'finished_at DESC'
+  named_scope :finished_self, :conditions => ['status IS NULL'], :order => 'finished_at DESC'
   named_scope :finished, :conditions => ['finished_at IS NOT NULL'], :order => 'finished_at ASC'
   named_scope :finished_before, lambda { |time| { :conditions => ['finished_at < ?', time] } }
 

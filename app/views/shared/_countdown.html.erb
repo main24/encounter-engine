@@ -15,41 +15,37 @@
       prefix: "Осталось: ",
       finish : function() {
         <% if logged_in? and @current_user.is_master %>
-          return
+          return;
         <% end %>
         <% unless @game.finished_users %>
-          return
+          return;
         <% end %>
         <% unless @game.levels && @game.levels.count > 0 %>
-          return
+          return;
         <% end %>
         <% if @game.draft? %>
-          return
+          return;
         <% end %>
 
         <% unless @game.game_passings.of_user(@user).first.nil? %>
           <% if @game.game_passings.of_user(@user).first.finished? %>
-             return
+             return;
           <% end %>
         <% end %>
 
         <% if @game.author_finished? %>
-          return
+          return;
         <% end %>
         <%
         if @user && @game
           @game_entry = GameEntry.of(@user,@game)
-          if @game_entry
-            if @game_entry.status == "accepted"
+          if (@game_entry && @game_entry.status == "accepted") || @game.is_free
             %>
               var game_id = <%= @game.id %>
               return window.location = "/play/"+game_id+"/";
             <%
-            else
-            %> document.write("<h1>You are not registered</h1>"); <%
-            end
           else
-          %> document.write("<h1>You are not registered</h1>"); <%
+            %> document.write("<h1>You are not registered</h1>"); <%
           end
         end
         %>
