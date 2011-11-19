@@ -4,7 +4,6 @@ class Logs < Application
   before :ensure_master, :only => [:show_live_channel, :show_level_log, :show_game_log]
   before :find_user, :only => [:show_level_log, :show_game_log]
   before :find_level, :only => [:show_level_log, :show_game_log]
-  before :ensure_game_passed, :only => [:show_full_log]
 
   def index
     render
@@ -44,10 +43,6 @@ protected
 
   def find_level
     @level = @user.current_level_in(@game)
-  end
-
-  def ensure_game_passed
-    raise Unauthorized, "Вы не закончили игру" if GamePassing.of(@current_user,@game).exited?
   end
 
 end
