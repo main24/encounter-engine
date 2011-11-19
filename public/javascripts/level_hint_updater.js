@@ -71,6 +71,8 @@ var LevelHintUpdater = function() {
             ,
             method: 'GET'
             ,
+            cache: false
+            ,
             dataType: 'json'
             ,
             success: function(data) {
