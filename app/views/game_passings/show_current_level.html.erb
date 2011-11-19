@@ -57,7 +57,7 @@
 
 <div>Текущее время: <span id="systemTime"></span>
   <script>
-    fullTime();
+    fullTime(new Date (<%= Time.now.strftime("%Y,%m-1,%d,%H,%M,%S") %>));
   </script>
 
 <br />

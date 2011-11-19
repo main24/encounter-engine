@@ -1,7 +1,7 @@
-function fullTime(){
-    var time = new Date();
-    document.getElementById('systemTime').innerHTML=checkTime(time.getHours()) + ":" +
-                                                    checkTime(time.getMinutes()) + ":" +
-                                                    checkTime(time.getSeconds());
-    setTimeout('fullTime()', 1000);
+function fullTime(sysTime){
+    sysTime.setTime(sysTime.getTime() + 1000);
+    document.getElementById('systemTime').innerHTML=checkTime(sysTime.getHours()) + ":" +
+                                                    checkTime(sysTime.getMinutes()) + ":" +
+                                                    checkTime(sysTime.getSeconds());
+    setTimeout(function(){fullTime(sysTime);}, 1000);
 }
