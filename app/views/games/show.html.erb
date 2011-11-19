@@ -74,9 +74,10 @@
 <script type="text/javascript">
   <% unless @game.starts_at.nil? %>
     var date = new Date(<%= (@game.starts_at + 1).strftime("%Y,%m-1,%d,%H,%M,%S") %>);
+    var current_date = new Date (<%= Time.now.strftime("%Y,%m-1,%d,%H,%M,%S") %>);
   <% end %>
 
-  $("#countdown-example").countdown(date,{
+  $("#countdown-example").countdown(date,current_date, {
     prefix:'До начала осталось: '
   });
 </script>

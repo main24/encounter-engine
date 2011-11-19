@@ -1,5 +1,5 @@
 <script type="text/javascript">
-  jQuery.fn.countdown = function (date, settings) {
+  jQuery.fn.countdown = function (date, current_date, settings) {
     var countdown_settings = {
       lang: {
         years:   ['год', 'года', 'лет'],
@@ -85,8 +85,11 @@
       return result.join(' ');
     };
     var elem = $(this);
+
+
+
     var timeUpdate = function () {
-      var s = timeDifference(new Date(), date);
+      var s = timeDifference(current_date, date);
       if (s.length) {
         elem.html(countdown_settings.prefix + s);
       } else {
