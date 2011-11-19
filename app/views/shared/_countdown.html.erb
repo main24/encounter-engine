@@ -89,6 +89,7 @@
 
 
     var timeUpdate = function () {
+      current_date.setTime(current_date.getTime() + 1000);
       var s = timeDifference(current_date, date);
       if (s.length) {
         elem.html(countdown_settings.prefix + s);
