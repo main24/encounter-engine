@@ -1,4 +1,3 @@
-# A sample Gemfile
 source :gemcutter
 
 merb_gems_version = "1.1.3"
@@ -26,6 +25,8 @@ gem "sqlite3-ruby", "1.2.5"
 
 group :development do
   gem 'ruby-debug'
+  gem "linecache", "=0.43"
+  gem 'rspec', '1.3.0', :require => 'spec'
 end
 
 group :test do
@@ -38,3 +39,5 @@ group :test do
   gem 'nokogiri', '1.4.1'
   gem 'rspec', '1.3.0', :require => 'spec'
 end
+
+
